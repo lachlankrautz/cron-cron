@@ -37,7 +37,6 @@ func onReady() {
 	mStatus = systray.AddMenuItem("-", "-")
 	mQuit := systray.AddMenuItem("Exit", "Stop cron and exit")
 
-	// Sets the icon of a menu item. Only available on Mac and Windows.
 	mQuit.SetIcon(icon.Data)
 
 	go func() {
@@ -68,8 +67,7 @@ func ensureCron() {
 }
 
 func isCronRunning() bool {
-	// out, err := exec.Command("cmd", "/C", "wsl", "--", "pgrep", "cron").Output()
-	cmd := exec.Command("wsl", "--", "pgrep", "cron")
+	cmd := exec.Command("wsl", "--", "pgrep", "-o", "cron")
 	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	out, err := cmd.Output()
 
@@ -88,7 +86,6 @@ func isCronRunning() bool {
 func startCron() error {
 	log.Println("Starting cron")
 
-	// cmd := exec.Command("cmd", "/C", "wsl", "--" , "sudo", "cron")
 	cmd := exec.Command("wsl", "--" , "sudo", "cron")
 	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
